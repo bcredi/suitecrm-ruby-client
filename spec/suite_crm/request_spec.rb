@@ -1,25 +1,13 @@
 RSpec.describe SuiteCrm::Request do
   describe '#call' do
-    it 'authenticate' do
-      faraday = ::Faraday.new(:url => 'http://crm-staging.bcredi.com.br') do |faraday|
-        faraday.request :url_encoded
-        faraday.adapter ::Faraday.default_adapter
-      end
+    let(:http_client) { spy('http_client') }
+    subject { SuiteCrm::Request.new(http_client) }
+    before { subject.call(method: 'login', params: {}) }
 
-      params = {
-        'user_auth' => {
-          'user_name' => 'apitest',
-          'password' => Digest::MD5.hexdigest('123456')
-        },
-        'application_name' => '',
-        'name_value_list' => []
-      }
-
-      resp = SuiteCrm::Request.new(faraday)
-                              .call(method: 'login', params: params)
-                              .body
-
-      expect(resp).to eq(true)
-    end
+    it do
+      endpoint = "/service/v4_1/rest.php"
+      params = {input_type: "JSON", method: "login", response_type: "JSON", rest_data: "{}"}
+      expect(http_client).to have_received(:post).with(endpoint, params)
+    end 
   end
 end
