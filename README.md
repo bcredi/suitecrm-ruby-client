@@ -1,4 +1,4 @@
-# SuiteCrm
+# SuiteCrm [![Build Status](https://travis-ci.com/bcredi/suitecrm-ruby-client.svg?branch=master)](https://travis-ci.com/bcredi/suitecrm-ruby-client)
 
 This is a simple implementation of SuiteCRM REST API v4.1.
 To experiment with that code, run `bin/console` for an interactive prompt.
