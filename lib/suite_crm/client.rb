@@ -3,6 +3,11 @@ require 'digest/md5'
 
 module SuiteCrm
   class Client
+    # = SuiteCrm::Client
+    #
+    # Use this to comunicate with the SuiteCrm api
+    # After initialize the object, call the #login method to ensure your client can make calls
+    #
     attr_reader :conn
 
     def initialize(endpoint: nil, conn: nil)
@@ -31,6 +36,29 @@ module SuiteCrm
 
     def authenticated?
       not @session_id.nil?
+    end
+
+    # Create or change an entry of *module_name*
+    #
+    # Params:
+    # 
+    # *module_name* is a module existent inside crm
+    #
+    # *data* is a list of hashes in the following format:
+    #   [
+    #     {'name' => 'key 1', 'value' => 'key value' },
+    #     {'name' => 'key 2', 'value' => 'key value' }
+    #   ]
+    #
+    def set_entry(module_name:, data:)
+      params = {
+        'session' => @session_id,
+        'module_name' => module_name,
+        'name_value_list' => data
+      }
+
+      request = SuiteCrm::Request.new(@conn).call(method: 'set_entry', params: params)
+      response = JSON.parse(request.body)
     end
 
     private

@@ -21,6 +21,15 @@ RSpec.describe SuiteCrm::Client do
     end
   end
 
+  describe '#set_entry' do
+    let(:response) { double('response', body: JSON.generate({"id"=>"6011cc41-31b6-c360-3cf1-5bf55a124a8c", "entry_list"=>{"title"=>{"name"=>"title", "value"=>"Api testing"}}})) }
+    let(:conn) { double('http_client', post: response) }
+    let(:data) {[{'name' => 'title', 'value' => 'Api testing'}]}
+    subject { SuiteCrm::Client.new(conn: conn) }
+
+    it { expect(subject.set_entry(module_name: 'Leads', data: data)).to be_an_instance_of Hash  }
+  end
+
   describe '#conn' do
     subject { SuiteCrm::Client.new(endpoint: 'http://somewhere.com') }
     it { expect(subject.conn).to be_an_instance_of Faraday::Connection }
