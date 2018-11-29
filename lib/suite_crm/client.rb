@@ -61,6 +61,17 @@ module SuiteCrm
       response = JSON.parse(request.body)
     end
 
+    def get_entry(module_name:, id:)
+      params = {
+        'session' => @session_id,
+        'module_name' => module_name,
+        'id' => id
+      }
+
+      request = SuiteCrm::Request.new(@conn).call(method: 'get_entry', params: params)
+      response = JSON.parse(request.body)
+    end
+
     private
 
     def authenticate(response)
