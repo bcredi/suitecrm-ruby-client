@@ -61,11 +61,13 @@ module SuiteCrm
       response = JSON.parse(request.body)
     end
 
-    def get_entry(module_name:, id:)
+    def get_entry(module_name:, id:, select_fields: [])
       params = {
         'session' => @session_id,
         'module_name' => module_name,
-        'id' => id
+        'id' => id,
+        'select_fields' => select_fields,
+        'link_name_to_fields_array' => []
       }
 
       request = SuiteCrm::Request.new(@conn).call(method: 'get_entry', params: params)
