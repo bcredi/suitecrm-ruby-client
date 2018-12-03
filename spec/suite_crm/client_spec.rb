@@ -31,12 +31,23 @@ RSpec.describe SuiteCrm::Client do
   end
 
    describe '#get_entry' do
-    let(:response) { double('response', body: JSON.generate({"id"=>"6011cc41-31b6-c360-3cf1-5bf55a124a8c", "entry_list"=>{"title"=>{"name"=>"title", "value"=>"Api testing"}}})) }
-    let(:conn) { double('http_client', post: response) }
-    let(:id) { '6011cc41-31b6-c360-3cf1-5bf55a124a8c' }
-    subject { SuiteCrm::Client.new(conn: conn) }
+    context 'without select fields' do 
+      let(:response) { double('response', body: JSON.generate({"id"=>"6011cc41-31b6-c360-3cf1-5bf55a124a8c", "entry_list"=>{"title"=>{"name"=>"title", "value"=>"Api testing"}}})) }
+      let(:conn) { double('http_client', post: response) }
+      let(:id) { '6011cc41-31b6-c360-3cf1-5bf55a124a8c' }
+      subject { SuiteCrm::Client.new(conn: conn) }
 
-    it { expect(subject.get_entry(module_name: 'Leads', id: id)).to be_an_instance_of Hash  }
+      it { expect(subject.get_entry(module_name: 'Leads', id: id)).to be_an_instance_of Hash  }
+    end
+
+    context 'with select fields' do
+      let(:response) { double('response', body: JSON.generate({"id"=>"6011cc41-31b6-c360-3cf1-5bf55a124a8c", "entry_list"=>{"title"=>{"name"=>"title", "value"=>"Api testing"}}})) }
+      let(:conn) { double('http_client', post: response) }
+      let(:id) { '6011cc41-31b6-c360-3cf1-5bf55a124a8c' }
+      subject { SuiteCrm::Client.new(conn: conn) }
+
+      it { expect(subject.get_entry(module_name: 'Leads', id: id, select_fields: ['id'])).to be_an_instance_of Hash  }
+    end
   end
 
   describe '#conn' do
