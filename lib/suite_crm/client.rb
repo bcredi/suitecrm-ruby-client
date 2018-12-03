@@ -66,7 +66,7 @@ module SuiteCrm
         'session' => @session_id,
         'module_name' => module_name,
         'id' => id,
-        'select_fields' => [],
+        'select_fields' => select_fields,
         'link_name_to_fields_array' => []
       }
 
